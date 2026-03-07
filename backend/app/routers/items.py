@@ -1,0 +1,138 @@
+import asyncio
+import json
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from app.models import Item, User
+from app.routers.auth import get_current_user
+from app.schemas import AIIdentificationResponse, ItemCreate, ItemResponse, ItemUpdateStatus, UserResponse
+from app.services.ai_identifier import identify_item_from_image
+
+router = APIRouter(prefix="/items", tags=["items"])
+
+
+def _tags_to_list(tags_str: Optional[str]) -> List[str]:
+    if not tags_str:
+        return []
+    try:
+        return json.loads(tags_str)
+    except Exception:
+        return []
+
+
+def _urls_to_list(urls_str: Optional[str]) -> List[str]:
+    if not urls_str:
+        return []
+    try:
+        return json.loads(urls_str)
+    except Exception:
+        return []
+
+
+def _item_to_response(item: Item) -> ItemResponse:
+    return ItemResponse(
+        id=item.id,
+        title=item.title,
+        description=item.description,
+        category=item.category,
+        condition=item.condition,
+        tags=_tags_to_list(item.tags),
+        image_urls=_urls_to_list(item.image_urls),
+        status=item.status,
+        owner=UserResponse(
+            id=item.owner.id,
+            phone_number=item.owner.phone_number,
+            display_name=item.owner.display_name,
+            created_at=item.owner.created_at,
+        ),
+        created_at=item.created_at,
+    )
+
+
+@router.post("/upload/identify", response_model=AIIdentificationResponse)
+async def upload_identify(
+    photo: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+):
+    if not photo.content_type or not photo.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    data = await photo.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty file")
+    result = await asyncio.to_thread(identify_item_from_image, data)
+    return AIIdentificationResponse(
+        title=result["title"],
+        description=result["description"],
+        category=result["category"],
+        condition=result["condition"],
+        tags=result["tags"],
+        confidence=result.get("confidence", 0.9),
+    )
+
+
+@router.post("/", response_model=ItemResponse)
+def create_item(
+    body: ItemCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    item = Item(
+        title=body.title,
+        description=body.description,
+        category=body.category,
+        condition=body.condition,
+        tags=json.dumps(body.tags),
+        image_urls=json.dumps(body.image_urls or []),
+        status="available",
+        owner_id=current_user.id,
+    )
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return _item_to_response(item)
+
+
+@router.get("/feed", response_model=List[ItemResponse])
+def get_feed(
+    category: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    q = db.query(Item).filter(Item.status == "available").order_by(Item.created_at.desc())
+    if category:
+        q = q.filter(Item.category == category)
+    items = q.limit(100).all()
+    return [_item_to_response(i) for i in items]
+
+
+@router.get("/{item_id}", response_model=ItemResponse)
+def get_item(
+    item_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    item = db.query(Item).filter(Item.id == item_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return _item_to_response(item)
+
+
+@router.patch("/{item_id}/status", response_model=ItemResponse)
+def update_item_status(
+    item_id: str,
+    body: ItemUpdateStatus,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    item = db.query(Item).filter(Item.id == item_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    if item.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not the owner")
+    item.status = body.status
+    db.commit()
+    db.refresh(item)
+    return _item_to_response(item)

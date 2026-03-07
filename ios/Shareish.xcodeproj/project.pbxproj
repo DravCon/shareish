@@ -1,0 +1,530 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5351F6FF2F5C6EF200B3EEE2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5351F6FE2F5C6EF200B3EEE2 /* FirebaseAuth */; };
+		5351F7012F5C6EF200B3EEE2 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5351F7002F5C6EF200B3EEE2 /* FirebaseCore */; };
+		B00100000000000000000001 /* ShareishApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000001 /* ShareishApp.swift */; };
+		B00100000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000002 /* ContentView.swift */; };
+		B00100000000000000000003 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000003 /* User.swift */; };
+		B00100000000000000000004 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000004 /* Item.swift */; };
+		B00100000000000000000005 /* Claim.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000005 /* Claim.swift */; };
+		B00100000000000000000006 /* AIIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000006 /* AIIdentification.swift */; };
+		B00100000000000000000007 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000007 /* LoginResponse.swift */; };
+		B00100000000000000000008 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000008 /* LoginView.swift */; };
+		B00100000000000000000009 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000009 /* FeedView.swift */; };
+		B0010000000000000000000A /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000A /* ItemCardView.swift */; };
+		B0010000000000000000000B /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000B /* CameraView.swift */; };
+		B0010000000000000000000C /* ReviewListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000C /* ReviewListingView.swift */; };
+		B0010000000000000000000D /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000D /* ImagePickerView.swift */; };
+		B0010000000000000000000E /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000E /* ItemDetailView.swift */; };
+		B0010000000000000000000F /* MyListingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000F /* MyListingsView.swift */; };
+		B00100000000000000000010 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000010 /* AuthViewModel.swift */; };
+		B00100000000000000000011 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000011 /* FeedViewModel.swift */; };
+		B00100000000000000000012 /* UploadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000012 /* UploadViewModel.swift */; };
+		B00100000000000000000013 /* ClaimViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000013 /* ClaimViewModel.swift */; };
+		B00100000000000000000014 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000014 /* APIClient.swift */; };
+		B00100000000000000000015 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000015 /* AuthService.swift */; };
+		B00100000000000000000016 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000016 /* KeychainHelper.swift */; };
+		B00100000000000000000017 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000017 /* ImageService.swift */; };
+		B00100000000000000000018 /* WhatsAppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000018 /* WhatsAppHelper.swift */; };
+		B00100000000000000000022 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000022 /* ServerConfig.swift */; };
+		B00100000000000000000019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000019 /* Assets.xcassets */; };
+		B0010000000000000000001C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000021 /* GoogleService-Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F00100000000000000000001 /* ShareishApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareishApp.swift; sourceTree = "<group>"; };
+		F00100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F00100000000000000000003 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F00100000000000000000004 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F00100000000000000000005 /* Claim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Claim.swift; sourceTree = "<group>"; };
+		F00100000000000000000006 /* AIIdentification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIIdentification.swift; sourceTree = "<group>"; };
+		F00100000000000000000007 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		F00100000000000000000008 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		F00100000000000000000009 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000A /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000B /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000C /* ReviewListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListingView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000D /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000E /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		F0010000000000000000000F /* MyListingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingsView.swift; sourceTree = "<group>"; };
+		F00100000000000000000010 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		F00100000000000000000011 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		F00100000000000000000012 /* UploadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewModel.swift; sourceTree = "<group>"; };
+		F00100000000000000000013 /* ClaimViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewModel.swift; sourceTree = "<group>"; };
+		F00100000000000000000014 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		F00100000000000000000015 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		F00100000000000000000016 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		F00100000000000000000017 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		F00100000000000000000018 /* WhatsAppHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppHelper.swift; sourceTree = "<group>"; };
+		F00100000000000000000019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F00100000000000000000020 /* Shareish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shareish.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00100000000000000000021 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F00100000000000000000022 /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E00100000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5351F7012F5C6EF200B3EEE2 /* FirebaseCore in Frameworks */,
+				5351F6FF2F5C6EF200B3EEE2 /* FirebaseAuth in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G00100000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				G00100000000000000000002 /* Shareish */,
+				G00100000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G00100000000000000000002 /* Shareish */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000001 /* ShareishApp.swift */,
+				F00100000000000000000002 /* ContentView.swift */,
+				G00100000000000000000004 /* Models */,
+				G00100000000000000000005 /* Views */,
+				G00100000000000000000006 /* ViewModels */,
+				G00100000000000000000007 /* Services */,
+				G00100000000000000000008 /* Utilities */,
+				F00100000000000000000019 /* Assets.xcassets */,
+				F00100000000000000000021 /* GoogleService-Info.plist */,
+				G00100000000000000000009 /* Info.plist (virtual) */,
+			);
+			path = Shareish;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000020 /* Shareish.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000003 /* User.swift */,
+				F00100000000000000000004 /* Item.swift */,
+				F00100000000000000000005 /* Claim.swift */,
+				F00100000000000000000006 /* AIIdentification.swift */,
+				F00100000000000000000007 /* LoginResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				G0010000000000000000000A /* Auth */,
+				G0010000000000000000000B /* Feed */,
+				G0010000000000000000000C /* Upload */,
+				G0010000000000000000000D /* Detail */,
+				G0010000000000000000000E /* Profile */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000006 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000010 /* AuthViewModel.swift */,
+				F00100000000000000000011 /* FeedViewModel.swift */,
+				F00100000000000000000012 /* UploadViewModel.swift */,
+				F00100000000000000000013 /* ClaimViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000014 /* APIClient.swift */,
+				F00100000000000000000015 /* AuthService.swift */,
+				F00100000000000000000016 /* KeychainHelper.swift */,
+				F00100000000000000000017 /* ImageService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000008 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000018 /* WhatsAppHelper.swift */,
+				F00100000000000000000022 /* ServerConfig.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		G00100000000000000000009 /* Info.plist (virtual) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Info.plist (virtual)";
+			sourceTree = "<group>";
+		};
+		G0010000000000000000000A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000008 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		G0010000000000000000000B /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				F00100000000000000000009 /* FeedView.swift */,
+				F0010000000000000000000A /* ItemCardView.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		G0010000000000000000000C /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				F0010000000000000000000B /* CameraView.swift */,
+				F0010000000000000000000C /* ReviewListingView.swift */,
+				F0010000000000000000000D /* ImagePickerView.swift */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
+		G0010000000000000000000D /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				F0010000000000000000000E /* ItemDetailView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		G0010000000000000000000E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F0010000000000000000000F /* MyListingsView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T00100000000000000000001 /* Shareish */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C00100000000000000000002 /* Build configuration list for PBXNativeTarget "Shareish" */;
+			buildPhases = (
+				S00100000000000000000001 /* Sources */,
+				R00100000000000000000001 /* Resources */,
+				E00100000000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shareish;
+			productName = Shareish;
+			productReference = F00100000000000000000020 /* Shareish.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		P00100000000000000000002 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2620;
+			};
+			buildConfigurationList = C00100000000000000000001 /* Build configuration list for PBXProject "Shareish" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G00100000000000000000001;
+			packageReferences = (
+				5351F6FD2F5C6EF200B3EEE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			productRefGroup = G00100000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T00100000000000000000001 /* Shareish */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		R00100000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00100000000000000000019 /* Assets.xcassets in Resources */,
+				B0010000000000000000001C /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		S00100000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00100000000000000000001 /* ShareishApp.swift in Sources */,
+				B00100000000000000000002 /* ContentView.swift in Sources */,
+				B00100000000000000000003 /* User.swift in Sources */,
+				B00100000000000000000004 /* Item.swift in Sources */,
+				B00100000000000000000005 /* Claim.swift in Sources */,
+				B00100000000000000000006 /* AIIdentification.swift in Sources */,
+				B00100000000000000000007 /* LoginResponse.swift in Sources */,
+				B00100000000000000000008 /* LoginView.swift in Sources */,
+				B00100000000000000000009 /* FeedView.swift in Sources */,
+				B0010000000000000000000A /* ItemCardView.swift in Sources */,
+				B0010000000000000000000B /* CameraView.swift in Sources */,
+				B0010000000000000000000C /* ReviewListingView.swift in Sources */,
+				B0010000000000000000000D /* ImagePickerView.swift in Sources */,
+				B0010000000000000000000E /* ItemDetailView.swift in Sources */,
+				B0010000000000000000000F /* MyListingsView.swift in Sources */,
+				B00100000000000000000010 /* AuthViewModel.swift in Sources */,
+				B00100000000000000000011 /* FeedViewModel.swift in Sources */,
+				B00100000000000000000012 /* UploadViewModel.swift in Sources */,
+				B00100000000000000000013 /* ClaimViewModel.swift in Sources */,
+				B00100000000000000000014 /* APIClient.swift in Sources */,
+				B00100000000000000000015 /* AuthService.swift in Sources */,
+				B00100000000000000000016 /* KeychainHelper.swift in Sources */,
+				B00100000000000000000017 /* ImageService.swift in Sources */,
+				B00100000000000000000018 /* WhatsAppHelper.swift in Sources */,
+				B00100000000000000000022 /* ServerConfig.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		X00100000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_MODE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		X00100000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_MODE = NO;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		X00100000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99TRH3GQUU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Shareish/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shareish.Shareish;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		X00100000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99TRH3GQUU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Shareish/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shareish.Shareish;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C00100000000000000000001 /* Build configuration list for PBXProject "Shareish" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X00100000000000000000001 /* Debug */,
+				X00100000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C00100000000000000000002 /* Build configuration list for PBXNativeTarget "Shareish" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X00100000000000000000003 /* Debug */,
+				X00100000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5351F6FD2F5C6EF200B3EEE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5351F6FE2F5C6EF200B3EEE2 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5351F6FD2F5C6EF200B3EEE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		5351F7002F5C6EF200B3EEE2 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5351F6FD2F5C6EF200B3EEE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = P00100000000000000000002 /* Project object */;
+}
