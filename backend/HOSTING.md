@@ -32,8 +32,8 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 
 2. **Add a new service** from the repo. In the new service:
    - **Settings → General**: set **Root Directory** to `backend` (so the build runs from the backend folder).
-   - **Settings → Build**: Railway will detect Python and run `pip install -r requirements.txt`. The repo includes a `backend/railway.toml` that sets the start command; if the service root is `backend`, that file is used automatically.
-   - **Settings → Deploy**: if the start command isn’t picked up, set **Custom Start Command** to:
+   - **Settings → Build**: The repo uses a **Dockerfile** so Railway builds with Docker instead of Railpack (avoids “error creating build plan on Railpack”). The `backend/railway.toml` sets `builder = "DOCKERFILE"`. If your build still uses Railpack and fails, go to **Settings → Build** and set **Builder** to **Dockerfile**.
+   - **Settings → Deploy**: Start command is set in `railway.toml`. If needed, set **Custom Start Command** to:
      ```bash
      uvicorn app.main:app --host 0.0.0.0 --port $PORT
      ```
