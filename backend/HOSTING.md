@@ -40,7 +40,9 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 
 3. **Add Postgres** (recommended for production):
    - In the project, click **+ New** → **Database** → **PostgreSQL**.
-   - In your **backend service** → **Variables**, click **+ New Variable** → **Add Reference** and add `DATABASE_URL` from the Postgres service (Railway fills it automatically).
+   - In your **backend service** → **Variables** tab, add one of these:
+     - **Option A (full URL):** `DATABASE_URL` = `${{Postgres.DATABASE_PUBLIC_URL}}` (use your Postgres service name; the **public** URL is a full connection string).
+     - **Option B (if only hostname is available):** Keep `DATABASE_URL` = `${{Postgres.DATABASE_URL}}` and add: `PGPASSWORD` = `${{Postgres.PGPASSWORD}}`, and optionally `PGUSER`, `PGDATABASE`, `PGPORT`. The app will build the connection URL from these.
    - Add `psycopg2-binary` to `backend/requirements.txt` so the app can use Postgres (sync driver).
 
 4. **Set variables** for the backend service (Variables tab):

@@ -7,6 +7,12 @@ class Settings(BaseSettings):
 
     # Database (SQLite for dev; set DATABASE_URL for Postgres)
     database_url: str = "sqlite:///./shareish.db"
+    # If DATABASE_URL is only a hostname, we can build URL from these (Railway Postgres exposes them)
+    pg_host: str = ""
+    pg_port: str = "5432"
+    pg_user: str = ""
+    pg_password: str = ""
+    pg_database: str = "railway"
 
     # JWT we issue after Firebase login
     jwt_secret: str = "change-me-in-production-use-long-random-string"
