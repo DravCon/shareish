@@ -40,9 +40,17 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 
 3. **Add Postgres** (recommended for production):
    - In the project, click **+ New** → **Database** → **PostgreSQL**.
-   - In your **backend service** → **Variables** tab, add one of these:
-     - **Option A (full URL):** `DATABASE_URL` = `${{Postgres.DATABASE_PUBLIC_URL}}` (use your Postgres service name; the **public** URL is a full connection string).
-     - **Option B (if only hostname is available):** Keep `DATABASE_URL` = `${{Postgres.DATABASE_URL}}` and add: `PGPASSWORD` = `${{Postgres.PGPASSWORD}}`, and optionally `PGUSER`, `PGDATABASE`, `PGPORT`. The app will build the connection URL from these.
+   - In your **backend service** → **Variables** tab, add variables so the app can connect. You do **not** type the username/password yourself; you **reference** them from the Postgres service (replace `Postgres` with your database service name if different):
+     - **Use internal URL (no proxy cost):** Railway’s private `DATABASE_URL` is often just the hostname. The app builds the full URL from these references. Add **all** of:
+       - `DATABASE_URL` = `${{Postgres.DATABASE_URL}}` (internal host, e.g. postgres.railway.internal)
+       - `PGUSER` = `${{Postgres.PGUSER}}`
+       - `PGPASSWORD` = `${{Postgres.PGPASSWORD}}`
+       - `PGDATABASE` = `${{Postgres.PGDATABASE}}`
+       - `PGPORT` = `${{Postgres.PGPORT}}`
+       The app will connect as `postgresql://PGUSER:PGPASSWORD@DATABASE_URL:PGPORT/PGDATABASE` (internal).
+     - **Or use public URL (simpler, uses proxy):** `DATABASE_URL` = `${{Postgres.DATABASE_PUBLIC_URL}}` only (full URL in one variable).
+   - **Reference syntax:** Use a leading `$`, e.g. `${{shareishdb.DATABASE_URL}}` (replace `shareishdb` with your Postgres service name).
+   - **If tables still don’t appear in Postgres:** In deploy logs look for `[Shareish] Using database: ...`. If it says `sqlite (local file)`, the `DATABASE_URL` reference didn’t resolve or is empty—add all five variables above with the `${{ServiceName.Variable}}` form and redeploy.
    - Add `psycopg2-binary` to `backend/requirements.txt` so the app can use Postgres (sync driver).
 
 4. **Set variables** for the backend service (Variables tab):

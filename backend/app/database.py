@@ -34,6 +34,21 @@ if not (database_url and database_url.strip()):
 if database_url.startswith("postgres://"):
     database_url = "postgresql://" + database_url[9:]
 
+
+def get_database_description() -> str:
+    """Safe description for logs (no passwords)."""
+    if database_url.startswith("sqlite"):
+        return "sqlite (local file)"
+    if database_url.startswith("postgresql://"):
+        try:
+            # postgresql://user:pass@host:port/dbname -> show host
+            rest = database_url.split("@", 1)[-1].split("/")[0]
+            return f"postgresql at {rest}"
+        except Exception:
+            return "postgresql"
+    return "unknown"
+
+
 # SQLite needs check_same_thread=False for FastAPI
 connect_args = {}
 if database_url.startswith("sqlite"):

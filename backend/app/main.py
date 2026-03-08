@@ -5,11 +5,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.config import settings
-from app.database import Base, engine, get_db
+from app.database import Base, engine, get_db, get_database_description
 from app.routers import auth, claims, items, uploads
 
-# Create tables (SQLite/DB)
-Base.metadata.create_all(bind=engine)
+# Create tables (SQLite/Postgres)
+try:
+    Base.metadata.create_all(bind=engine)
+    print(f"[Shareish] Using database: {get_database_description()}")
+except Exception as e:
+    print(f"[Shareish] Database create_all failed: {e}")
+    raise
 
 
 def _ensure_image_urls_column():
