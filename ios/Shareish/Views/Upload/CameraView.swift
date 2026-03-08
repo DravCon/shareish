@@ -8,6 +8,7 @@ import SwiftUI
 struct CameraView: View {
     @ObservedObject var viewModel: UploadViewModel
     @State private var showImagePicker = false
+    @State private var showCamera = false
     @State private var showReview = false
 
     var body: some View {
@@ -49,25 +50,38 @@ struct CameraView: View {
                             .multilineTextAlignment(.center)
                     }
 
-                    Button("Choose another photo") {
-                        viewModel.reset()
-                        showImagePicker = true
+                    HStack(spacing: 12) {
+                        Button("Take new photo") {
+                            viewModel.reset()
+                            showCamera = true
+                        }
+                        .buttonStyle(.bordered)
+                        Button("Choose from library") {
+                            viewModel.reset()
+                            showImagePicker = true
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
                 } else {
                     VStack(spacing: 20) {
                         Image(systemName: "photo.on.rectangle.angled")
                             .font(.system(size: 60))
                             .foregroundStyle(.secondary)
-                        Text("Choose a photo of the item you want to give away")
+                        Text("Add a photo of the item you want to give away")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
-                        Button("Select photo") {
-                            showImagePicker = true
+                        Button {
+                            showCamera = true
+                        } label: {
+                            Label("Take photo", systemImage: "camera.fill")
                         }
                         .buttonStyle(.borderedProminent)
+                        Button("Choose from library") {
+                            showImagePicker = true
+                        }
+                        .buttonStyle(.bordered)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -76,6 +90,12 @@ struct CameraView: View {
             .navigationTitle("List an item")
             .sheet(isPresented: $showImagePicker) {
                 ImagePickerView(image: Binding(
+                    get: { viewModel.selectedImage },
+                    set: { viewModel.selectedImage = $0 }
+                ))
+            }
+            .fullScreenCover(isPresented: $showCamera) {
+                CameraCaptureView(image: Binding(
                     get: { viewModel.selectedImage },
                     set: { viewModel.selectedImage = $0 }
                 ))

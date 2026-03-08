@@ -5,10 +5,16 @@
 
 import Foundation
 
+/// Posted when the server returns 401 and the client clears the stored session.
+extension Notification.Name {
+    static let shareishSessionExpired = Notification.Name("ShareishSessionExpired")
+}
+
 enum APIError: Error, LocalizedError {
     case invalidURL
     case invalidResponse
     case httpStatus(Int)
+    case unauthorized(String?)
     case decoding(Error)
     case encoding(Error)
     case noData
@@ -18,6 +24,7 @@ enum APIError: Error, LocalizedError {
         case .invalidURL: return "Invalid URL"
         case .invalidResponse: return "Invalid response from server"
         case .httpStatus(let code): return "Server error (HTTP \(code))"
+        case .unauthorized(let detail): return detail ?? "Session expired. Please sign in again."
         case .decoding(let e): return "Decoding error: \(e.localizedDescription)"
         case .encoding(let e): return "Encoding error: \(e.localizedDescription)"
         case .noData: return "No data received"
@@ -70,6 +77,15 @@ actor APIClient {
         authToken = token
     }
 
+    /// Clear stored token and notify so the app can show login again (e.g. after 401).
+    private func clearSessionAndNotify() {
+        authToken = nil
+        KeychainHelper.deleteToken()
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .shareishSessionExpired, object: nil)
+        }
+    }
+
     private func url(for path: String, query: [String: String]? = nil) throws -> URL {
         let normalizedPath = path.hasPrefix("/") ? path : "/" + path
         let full = baseURL + normalizedPath
@@ -94,6 +110,11 @@ actor APIClient {
 
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
         guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
         return (data, http)
     }
@@ -178,6 +199,11 @@ actor APIClient {
 
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
         guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
         do {
             return try decoder.decode(AIIdentification.self, from: data)

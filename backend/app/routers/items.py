@@ -3,6 +3,7 @@ import json
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -62,15 +63,34 @@ async def upload_identify(
     data = await photo.read()
     if not data:
         raise HTTPException(status_code=400, detail="Empty file")
-    result = await asyncio.to_thread(identify_item_from_image, data)
-    return AIIdentificationResponse(
-        title=result["title"],
-        description=result["description"],
-        category=result["category"],
-        condition=result["condition"],
-        tags=result["tags"],
-        confidence=result.get("confidence", 0.9),
-    )
+    try:
+        result = await asyncio.to_thread(identify_item_from_image, data)
+        return AIIdentificationResponse(
+            title=result["title"],
+            description=result["description"],
+            category=result["category"],
+            condition=result["condition"],
+            tags=result["tags"],
+            confidence=result["confidence"],
+        )
+    except ValueError as e:
+        msg = str(e)
+        if "ANTHROPIC_API_KEY" in msg or "not set" in msg:
+            raise HTTPException(
+                status_code=503,
+                detail="AI identification is not configured. Set ANTHROPIC_API_KEY on the server.",
+            ) from e
+        raise HTTPException(status_code=503, detail=f"AI identification failed: {msg}") from e
+    except ValidationError as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"AI returned invalid format: {e}",
+        ) from e
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"AI identification failed: {str(e)}",
+        ) from e
 
 
 @router.post("/", response_model=ItemResponse)

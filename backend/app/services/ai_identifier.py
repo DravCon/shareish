@@ -32,42 +32,64 @@ Be concise and accurate. If the image is unclear or not a single item, guess the
 def identify_item_from_image(image_bytes: bytes) -> dict:
     client = _get_client()
     image_b64 = base64.standard_b64encode(image_bytes).decode("ascii")
-    # Detect media type; JPEG is common from phones
     media_type = "image/jpeg"
 
-    response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=512,
-        system=SYSTEM_PROMPT,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": media_type,
-                            "data": image_b64,
+    try:
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=512,
+            system=SYSTEM_PROMPT,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "image",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": image_b64,
+                            },
                         },
-                    },
-                ],
-            },
-        ],
-    )
-    text = response.content[0].text if response.content else "{}"
+                    ],
+                },
+            ],
+        )
+    except Exception as e:
+        raise ValueError(f"Anthropic API error: {e}") from e
+
+    if not response.content:
+        raise ValueError("AI returned no content")
+    first_block = response.content[0]
+    text = getattr(first_block, "text", None) or "{}"
     # Parse JSON from response (handle optional markdown code block)
     text = text.strip()
     if text.startswith("```"):
         lines = text.split("\n")
         text = "\n".join(lines[1:-1]) if len(lines) > 2 else text
     import json
-    data = json.loads(text)
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"AI returned invalid JSON: {e}") from e
+
+    # Normalize so Pydantic never gets wrong types (avoids 500)
+    raw_tags = data.get("tags")
+    if isinstance(raw_tags, list):
+        tags = [str(t) for t in raw_tags]
+    else:
+        tags = []
+    try:
+        confidence = float(data.get("confidence", 0.9))
+    except (TypeError, ValueError):
+        confidence = 0.9
+    confidence = max(0.0, min(1.0, confidence))
+
     return {
-        "title": data.get("title", "Item"),
-        "description": data.get("description", ""),
-        "category": data.get("category", "Other"),
-        "condition": data.get("condition", "Used"),
-        "tags": data.get("tags", []),
-        "confidence": float(data.get("confidence", 0.9)),
+        "title": str(data.get("title") or "Item")[:200],
+        "description": str(data.get("description") or "")[:2000],
+        "category": str(data.get("category") or "Other")[:64],
+        "condition": str(data.get("condition") or "Used")[:64],
+        "tags": tags[:20],
+        "confidence": confidence,
     }

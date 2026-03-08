@@ -22,6 +22,7 @@
 		B0010000000000000000000B /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000B /* CameraView.swift */; };
 		B0010000000000000000000C /* ReviewListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000C /* ReviewListingView.swift */; };
 		B0010000000000000000000D /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000D /* ImagePickerView.swift */; };
+		B00100000000000000000023 /* CameraCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000023 /* CameraCaptureView.swift */; };
 		B0010000000000000000000E /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000E /* ItemDetailView.swift */; };
 		B0010000000000000000000F /* MyListingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000F /* MyListingsView.swift */; };
 		B00100000000000000000010 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000010 /* AuthViewModel.swift */; };
@@ -52,6 +53,7 @@
 		F0010000000000000000000B /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000C /* ReviewListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListingView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000D /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		F00100000000000000000023 /* CameraCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000E /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000F /* MyListingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingsView.swift; sourceTree = "<group>"; };
 		F00100000000000000000010 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				F0010000000000000000000B /* CameraView.swift */,
+				F00100000000000000000023 /* CameraCaptureView.swift */,
 				F0010000000000000000000C /* ReviewListingView.swift */,
 				F0010000000000000000000D /* ImagePickerView.swift */,
 			);
@@ -301,6 +304,7 @@
 				B0010000000000000000000B /* CameraView.swift in Sources */,
 				B0010000000000000000000C /* ReviewListingView.swift in Sources */,
 				B0010000000000000000000D /* ImagePickerView.swift in Sources */,
+				B00100000000000000000023 /* CameraCaptureView.swift in Sources */,
 				B0010000000000000000000E /* ItemDetailView.swift in Sources */,
 				B0010000000000000000000F /* MyListingsView.swift in Sources */,
 				B00100000000000000000010 /* AuthViewModel.swift in Sources */,
