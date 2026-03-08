@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import ValidationError
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -163,7 +164,11 @@ def get_item(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    item = db.query(Item).filter(Item.id == item_id).first()
+    # Case-insensitive lookup (client may send UUID in different casing)
+    item_id_clean = (item_id or "").strip().lower()
+    if not item_id_clean or len(item_id_clean) != 36:
+        raise HTTPException(status_code=404, detail="Item not found")
+    item = db.query(Item).filter(func.lower(Item.id) == item_id_clean).first()
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     return _item_to_response(item)
@@ -176,7 +181,8 @@ def update_item_status(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    item = db.query(Item).filter(Item.id == item_id).first()
+    item_id_clean = (item_id or "").strip().lower()
+    item = db.query(Item).filter(func.lower(Item.id) == item_id_clean).first()
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     if item.owner_id != current_user.id:
