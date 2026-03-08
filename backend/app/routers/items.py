@@ -94,6 +94,9 @@ def _upload_to_s3(data: bytes, filename: str, content_type: str) -> Optional[str
     try:
         import boto3
         from botocore.config import Config
+    except ImportError:
+        return None
+    try:
         client = boto3.client(
             "s3",
             region_name=settings.s3_region or "us-east-1",
@@ -120,7 +123,10 @@ def _upload_to_s3(data: bytes, filename: str, content_type: str) -> Optional[str
 def _item_to_response(item: Item) -> ItemResponse:
     raw_urls = _urls_to_list(item.image_urls)
     image_urls = [ _to_absolute_image_url(u) for u in raw_urls ] if raw_urls else []
-    first_image_base64 = _read_first_image_as_base64(raw_urls)
+    try:
+        first_image_base64 = _read_first_image_as_base64(raw_urls)
+    except Exception:
+        first_image_base64 = None
     return ItemResponse(
         id=item.id,
         title=item.title,

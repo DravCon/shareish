@@ -8,8 +8,9 @@ from app.config import settings
 
 router = APIRouter(prefix="/uploads", tags=["uploads"])
 
-# Resolve once at import so it matches the upload handler (same settings.upload_dir)
-_UPLOAD_DIR = Path(settings.upload_dir).resolve()
+
+def _upload_dir() -> Path:
+    return Path(settings.upload_dir).resolve()
 
 
 @router.get("/{filename}")
@@ -17,8 +18,9 @@ def get_uploaded_file(filename: str):
     """Serve an uploaded image. Filename must be a single path segment (no slashes)."""
     if "/" in filename or ".." in filename or not filename.strip():
         raise HTTPException(status_code=404, detail="Not found")
-    _UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    file_path = _UPLOAD_DIR / filename
+    upload_dir = _upload_dir()
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    file_path = upload_dir / filename
     if not file_path.is_file():
         raise HTTPException(status_code=404, detail="Not found")
     return FileResponse(
