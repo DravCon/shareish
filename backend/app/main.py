@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -8,12 +9,14 @@ from app.config import settings
 from app.database import Base, engine, get_db, get_database_description
 from app.routers import auth, claims, items, uploads
 
+logger = logging.getLogger("uvicorn.error")
+
 # Create tables (SQLite/Postgres)
 try:
     Base.metadata.create_all(bind=engine)
-    print(f"[Shareish] Using database: {get_database_description()}")
+    logger.info(f"Shareish using database: {get_database_description()}")
 except Exception as e:
-    print(f"[Shareish] Database create_all failed: {e}")
+    logger.exception("Database create_all failed")
     raise
 
 
