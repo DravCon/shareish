@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.config import settings
 from app.database import Base, engine, get_db
@@ -9,6 +10,25 @@ from app.routers import auth, claims, items, uploads
 
 # Create tables (SQLite/DB)
 Base.metadata.create_all(bind=engine)
+
+
+def _ensure_image_urls_column():
+    """Add image_urls to items if the table existed from before this column was added."""
+    with engine.connect() as conn:
+        if conn.get_bind().dialect.name == "sqlite":
+            cursor = conn.execute(text("PRAGMA table_info(items)"))
+            rows = cursor.fetchall()
+            # PRAGMA table_info: (cid, name, type, notnull, default_value, pk)
+            if not any(r[1] == "image_urls" for r in rows):
+                conn.execute(text("ALTER TABLE items ADD COLUMN image_urls TEXT"))
+        else:
+            conn.execute(
+                text("ALTER TABLE items ADD COLUMN IF NOT EXISTS image_urls TEXT")
+            )
+        conn.commit()
+
+
+_ensure_image_urls_column()
 
 
 @asynccontextmanager
