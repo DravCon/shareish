@@ -42,7 +42,7 @@ struct ItemDetailView: View {
                 if !item.imageUrls.isEmpty {
                     TabView {
                         ForEach(Array(item.imageUrls.enumerated()), id: \.offset) { _, urlString in
-                            if let url = URL(string: urlString) {
+                            if let url = ServerConfig.imageURL(for: urlString) {
                                 AsyncImage(url: url) { phase in
                                     switch phase {
                                     case .success(let image):

@@ -10,8 +10,7 @@ struct ItemCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let urlString = item.imageUrls.first,
-               let url = URL(string: urlString) {
+            if let url = ServerConfig.imageURL(for: item.imageUrls.first) {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:

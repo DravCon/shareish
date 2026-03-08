@@ -42,4 +42,14 @@ enum ServerConfig {
         }
         return base
     }
+
+    /// Returns a loadable URL for an image. Handles full URLs (https://...) or paths (/uploads/...).
+    static func imageURL(for urlString: String?) -> URL? {
+        guard let s = urlString?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty else { return nil }
+        if s.lowercased().hasPrefix("http://") || s.lowercased().hasPrefix("https://") {
+            return URL(string: s)
+        }
+        let path = s.hasPrefix("/") ? s : "/" + s
+        return URL(string: origin + path)
+    }
 }

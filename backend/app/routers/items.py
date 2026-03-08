@@ -74,11 +74,12 @@ async def upload_image(
     if ext not in ("jpg", "jpeg", "png", "gif", "webp"):
         ext = "jpg"
     name = f"{uuid.uuid4().hex}.{ext}"
-    upload_path = Path(settings.upload_dir)
+    upload_path = Path(settings.upload_dir).resolve()
     upload_path.mkdir(parents=True, exist_ok=True)
     file_path = upload_path / name
     file_path.write_bytes(data)
-    return ImageUploadResponse(url=f"/uploads/{name}")
+    # Path under API prefix so GET /api/v1/uploads/xyz works (proxies forward /api/v1)
+    return ImageUploadResponse(url=f"{settings.api_v1_prefix}/uploads/{name}")
 
 
 @router.post("/upload/identify", response_model=AIIdentificationResponse)

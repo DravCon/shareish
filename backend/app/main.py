@@ -36,10 +36,10 @@ app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(items.router, prefix=settings.api_v1_prefix)
 app.include_router(claims.router, prefix=settings.api_v1_prefix)
 
-# Serve uploaded images at /uploads (URLs returned from POST /items/upload)
-upload_dir = Path(settings.upload_dir).resolve()
-upload_dir.mkdir(parents=True, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=str(upload_dir)), name="uploads")
+# Serve uploaded images at /api/v1/uploads so the same host/path works behind proxies (e.g. Railway)
+_upload_dir = Path(settings.upload_dir).resolve()
+_upload_dir.mkdir(parents=True, exist_ok=True)
+app.mount(f"{settings.api_v1_prefix}/uploads", StaticFiles(directory=str(_upload_dir)), name="uploads")
 
 
 @app.get("/")

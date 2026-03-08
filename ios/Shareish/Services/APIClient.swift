@@ -251,8 +251,10 @@ actor APIClient {
             throw APIError.httpStatus(http.statusCode, detail: detail)
         }
         let decoded = try decoder.decode(ImageUploadResponse.self, from: data)
+        // Backend returns path like /api/v1/uploads/xyz.jpg; build full URL from origin
         let path = decoded.url.hasPrefix("/") ? decoded.url : "/" + decoded.url
-        return ServerConfig.origin + path
+        let origin = ServerConfig.origin
+        return origin.hasSuffix("/") ? origin + path.dropFirst() : origin + path
     }
 }
 
