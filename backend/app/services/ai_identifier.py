@@ -35,8 +35,9 @@ def identify_item_from_image(image_bytes: bytes) -> dict:
     media_type = "image/jpeg"
 
     try:
+        # Use an active model; claude-3-5-sonnet-20241022 was retired Oct 2025
         response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="claude-sonnet-4-20250514",
             max_tokens=512,
             system=SYSTEM_PROMPT,
             messages=[
