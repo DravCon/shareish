@@ -7,7 +7,7 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ .
 
-RUN mkdir -p uploads && chmod +x start.sh
+RUN mkdir -p uploads
 
 EXPOSE 8000
-CMD ["./start.sh"]
+CMD ["python", "start.py"]
