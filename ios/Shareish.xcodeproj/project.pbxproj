@@ -15,6 +15,7 @@
 		B00100000000000000000004 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000004 /* Item.swift */; };
 		B00100000000000000000005 /* Claim.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000005 /* Claim.swift */; };
 		B00100000000000000000006 /* AIIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000006 /* AIIdentification.swift */; };
+		B00100000000000000000024 /* ImageUploadResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000024 /* ImageUploadResponse.swift */; };
 		B00100000000000000000007 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000007 /* LoginResponse.swift */; };
 		B00100000000000000000008 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000008 /* LoginView.swift */; };
 		B00100000000000000000009 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000009 /* FeedView.swift */; };
@@ -46,6 +47,7 @@
 		F00100000000000000000004 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F00100000000000000000005 /* Claim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Claim.swift; sourceTree = "<group>"; };
 		F00100000000000000000006 /* AIIdentification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIIdentification.swift; sourceTree = "<group>"; };
+		F00100000000000000000024 /* ImageUploadResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadResponse.swift; sourceTree = "<group>"; };
 		F00100000000000000000007 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		F00100000000000000000008 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		F00100000000000000000009 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				F00100000000000000000004 /* Item.swift */,
 				F00100000000000000000005 /* Claim.swift */,
 				F00100000000000000000006 /* AIIdentification.swift */,
+				F00100000000000000000024 /* ImageUploadResponse.swift */,
 				F00100000000000000000007 /* LoginResponse.swift */,
 			);
 			path = Models;
@@ -297,6 +300,7 @@
 				B00100000000000000000004 /* Item.swift in Sources */,
 				B00100000000000000000005 /* Claim.swift in Sources */,
 				B00100000000000000000006 /* AIIdentification.swift in Sources */,
+				B00100000000000000000024 /* ImageUploadResponse.swift in Sources */,
 				B00100000000000000000007 /* LoginResponse.swift in Sources */,
 				B00100000000000000000008 /* LoginView.swift in Sources */,
 				B00100000000000000000009 /* FeedView.swift in Sources */,

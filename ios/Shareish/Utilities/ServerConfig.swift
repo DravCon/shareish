@@ -30,4 +30,16 @@ enum ServerConfig {
             UserDefaults.standard.set(trimmed.isEmpty ? Self.default : trimmed, forKey: key)
         }
     }
+
+    /// Base URL without /api/v1 path (e.g. https://host.up.railway.app) for building image URLs.
+    static var origin: String {
+        let base = baseURL
+        if base.hasSuffix("/api/v1") {
+            return String(base.dropLast(8))
+        }
+        if base.hasSuffix("/api/v1/") {
+            return String(base.dropLast(9))
+        }
+        return base
+    }
 }

@@ -1,15 +1,19 @@
 import asyncio
 import json
+import os
+import uuid
+from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.models import Item, User
 from app.routers.auth import get_current_user
-from app.schemas import AIIdentificationResponse, ItemCreate, ItemResponse, ItemUpdateStatus, UserResponse
+from app.schemas import AIIdentificationResponse, ImageUploadResponse, ItemCreate, ItemResponse, ItemUpdateStatus, UserResponse
 from app.services.ai_identifier import identify_item_from_image
 
 router = APIRouter(prefix="/items", tags=["items"])
@@ -51,6 +55,30 @@ def _item_to_response(item: Item) -> ItemResponse:
         ),
         created_at=item.created_at,
     )
+
+
+@router.post("/upload", response_model=ImageUploadResponse)
+async def upload_image(
+    photo: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+):
+    """Upload an image for a listing. Returns URL path (e.g. /uploads/xyz.jpg) to use in image_urls when creating the item."""
+    if not photo.content_type or not photo.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    data = await photo.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty file")
+    ext = "jpg"
+    if photo.filename and "." in photo.filename:
+        ext = photo.filename.rsplit(".", 1)[-1].lower()
+    if ext not in ("jpg", "jpeg", "png", "gif", "webp"):
+        ext = "jpg"
+    name = f"{uuid.uuid4().hex}.{ext}"
+    upload_path = Path(settings.upload_dir)
+    upload_path.mkdir(parents=True, exist_ok=True)
+    file_path = upload_path / name
+    file_path.write_bytes(data)
+    return ImageUploadResponse(url=f"/uploads/{name}")
 
 
 @router.post("/upload/identify", response_model=AIIdentificationResponse)

@@ -219,6 +219,41 @@ actor APIClient {
             throw APIError.decoding(error)
         }
     }
+
+    /// Upload image for a listing; returns full URL to use in image_urls when creating the item.
+    func uploadImageForListing(imageData: Data, filename: String = "photo.jpg") async throws -> String {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"photo\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+
+        let url = try url(for: "/items/upload")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.httpBody = body
+        if let token = await authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
+        let decoded = try decoder.decode(ImageUploadResponse.self, from: data)
+        let path = decoded.url.hasPrefix("/") ? decoded.url : "/" + decoded.url
+        return ServerConfig.origin + path
+    }
 }
 
 /// Type-erased Encodable for generic post/patch body.

@@ -46,6 +46,10 @@ class AIIdentificationResponse(BaseModel):
     confidence: float
 
 
+class ImageUploadResponse(BaseModel):
+    url: str  # e.g. /uploads/abc123.jpg (client prepends server origin)
+
+
 class ItemCreate(BaseModel):
     title: str
     description: str
