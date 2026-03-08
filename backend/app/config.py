@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     # Uploaded images stored under this directory; URLs will be /uploads/...
     upload_dir: str = "./uploads"
 
+    # Public origin for absolute image URLs (e.g. https://shareish-production.up.railway.app).
+    # When set, item responses and upload response return full image URLs so clients always get loadable URLs.
+    public_origin: str = ""
+
     class Config:
         env_file = ".env"
         extra = "ignore"

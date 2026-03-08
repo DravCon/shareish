@@ -1,13 +1,11 @@
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import Base, engine, get_db
-from app.routers import auth, claims, items
+from app.routers import auth, claims, items, uploads
 
 # Create tables (SQLite/DB)
 Base.metadata.create_all(bind=engine)
@@ -35,11 +33,7 @@ app.add_middleware(
 app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(items.router, prefix=settings.api_v1_prefix)
 app.include_router(claims.router, prefix=settings.api_v1_prefix)
-
-# Serve uploaded images at /api/v1/uploads so the same host/path works behind proxies (e.g. Railway)
-_upload_dir = Path(settings.upload_dir).resolve()
-_upload_dir.mkdir(parents=True, exist_ok=True)
-app.mount(f"{settings.api_v1_prefix}/uploads", StaticFiles(directory=str(_upload_dir)), name="uploads")
+app.include_router(uploads.router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/")

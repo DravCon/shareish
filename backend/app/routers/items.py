@@ -38,7 +38,21 @@ def _urls_to_list(urls_str: Optional[str]) -> List[str]:
         return []
 
 
+def _to_absolute_image_url(url: str) -> str:
+    """Return a loadable absolute URL. If url is already absolute, return as-is; else prepend public_origin."""
+    s = (url or "").strip()
+    if not s:
+        return s
+    if s.lower().startswith("http://") or s.lower().startswith("https://"):
+        return s
+    origin = (settings.public_origin or "").strip().rstrip("/")
+    path = s if s.startswith("/") else f"/{s}"
+    return f"{origin}{path}" if origin else url
+
+
 def _item_to_response(item: Item) -> ItemResponse:
+    raw_urls = _urls_to_list(item.image_urls)
+    image_urls = [ _to_absolute_image_url(u) for u in raw_urls ] if raw_urls else []
     return ItemResponse(
         id=item.id,
         title=item.title,
@@ -46,7 +60,7 @@ def _item_to_response(item: Item) -> ItemResponse:
         category=item.category,
         condition=item.condition,
         tags=_tags_to_list(item.tags),
-        image_urls=_urls_to_list(item.image_urls),
+        image_urls=image_urls,
         status=item.status,
         owner=UserResponse(
             id=item.owner.id,
@@ -80,7 +94,11 @@ async def upload_image(
     file_path = upload_path / name
     file_path.write_bytes(data)
     # Path under API prefix so GET /api/v1/uploads/xyz works (proxies forward /api/v1)
-    return ImageUploadResponse(url=f"{settings.api_v1_prefix}/uploads/{name}")
+    path = f"{settings.api_v1_prefix}/uploads/{name}"
+    if settings.public_origin:
+        origin = settings.public_origin.strip().rstrip("/")
+        path = f"{origin}{path}" if path.startswith("/") else f"{origin}/{path}"
+    return ImageUploadResponse(url=path)
 
 
 @router.post("/upload/identify", response_model=AIIdentificationResponse)

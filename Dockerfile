@@ -7,7 +7,9 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ .
 
-RUN mkdir -p uploads
+RUN mkdir -p /app/uploads
+
+ENV UPLOAD_DIR=/app/uploads
 
 EXPOSE 8000
 CMD ["python", "start.py"]

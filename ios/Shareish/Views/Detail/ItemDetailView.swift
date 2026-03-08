@@ -52,17 +52,27 @@ struct ItemDetailView: View {
                                     case .failure:
                                         Rectangle()
                                             .fill(.quaternary)
-                                            .overlay { Image(systemName: "photo") }
+                                            .overlay {
+                                                Image(systemName: "photo")
+                                                    .font(.largeTitle)
+                                                    .foregroundStyle(.secondary)
+                                            }
                                     default:
-                                        ProgressView()
+                                        Rectangle()
+                                            .fill(.quaternary)
+                                            .overlay { ProgressView() }
                                     }
                                 }
                                 .frame(height: 280)
+                            } else {
+                                placeholderImageRow()
                             }
                         }
                     }
                     .tabViewStyle(.page)
                     .frame(height: 280)
+                } else {
+                    placeholderImageRow()
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -119,6 +129,17 @@ struct ItemDetailView: View {
                 .disabled(claimViewModel.isClaiming)
             }
         }
+    }
+
+    private func placeholderImageRow() -> some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(.quaternary)
+            .frame(height: 280)
+            .overlay {
+                Image(systemName: "photo")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+            }
     }
 
     private func loadItem() async {

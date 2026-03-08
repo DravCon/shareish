@@ -46,6 +46,7 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 4. **Set variables** for the backend service (Variables tab):
    - `JWT_SECRET` – Generate with e.g. `openssl rand -hex 32`.
    - `ANTHROPIC_API_KEY` – Your Anthropic key (for “Identify with AI”).
+   - `PUBLIC_ORIGIN` – Your public app URL without `/api/v1`, e.g. `https://shareish-production.up.railway.app`. Required for listing images to load in the app.
    - (Optional) `UPLOAD_DIR` – e.g. `./uploads`; note the filesystem is ephemeral, so uploads are lost on redeploy unless you add a volume or object storage later.
 
 5. **Public URL**: In the backend service, open **Settings → Networking** → **Generate Domain**. You’ll get a URL like `https://shareish-backend-production-xxxx.up.railway.app`.
