@@ -74,6 +74,7 @@ class ItemResponse(BaseModel):
     status: str
     owner: UserResponse
     created_at: datetime
+    first_image_base64: Optional[str] = None  # when set, client can show image without a separate GET
 
     class Config:
         from_attributes = True

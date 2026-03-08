@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ItemDetailView: View {
     let itemId: UUID
@@ -39,7 +40,14 @@ struct ItemDetailView: View {
     private func detailContent(item: Item) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if !item.imageUrls.isEmpty {
+                if let b64 = item.firstImageBase64,
+                   let data = Data(base64Encoded: b64),
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 280)
+                } else if !item.imageUrls.isEmpty {
                     TabView {
                         ForEach(Array(item.imageUrls.enumerated()), id: \.offset) { _, urlString in
                             if let url = ServerConfig.imageURL(for: urlString) {

@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import json
 import os
 import uuid
@@ -50,9 +51,44 @@ def _to_absolute_image_url(url: str) -> str:
     return f"{origin}{path}" if origin else url
 
 
+def _first_upload_filename(url: str) -> Optional[str]:
+    """If url is our upload path (e.g. .../uploads/xyz.jpg), return the filename (xyz.jpg)."""
+    s = (url or "").strip()
+    if not s:
+        return None
+    prefix = f"{settings.api_v1_prefix}/uploads/"
+    if prefix in s:
+        part = s.split(prefix, 1)[-1].split("?")[0].strip()
+        if part and "/" not in part and ".." not in part:
+            return part
+    if s.startswith("/uploads/") or s.endswith("/uploads/"):
+        part = s.split("/uploads/")[-1].split("?")[0].strip()
+        if part and "/" not in part and ".." not in part:
+            return part
+    return None
+
+
+def _read_first_image_as_base64(raw_urls: List[str]) -> Optional[str]:
+    """If the first image URL points to a local upload file that exists, return its base64 content."""
+    if not raw_urls:
+        return None
+    filename = _first_upload_filename(raw_urls[0])
+    if not filename:
+        return None
+    upload_dir = Path(settings.upload_dir).resolve()
+    file_path = upload_dir / filename
+    try:
+        if file_path.is_file():
+            return base64.b64encode(file_path.read_bytes()).decode("ascii")
+    except Exception:
+        pass
+    return None
+
+
 def _item_to_response(item: Item) -> ItemResponse:
     raw_urls = _urls_to_list(item.image_urls)
     image_urls = [ _to_absolute_image_url(u) for u in raw_urls ] if raw_urls else []
+    first_image_base64 = _read_first_image_as_base64(raw_urls)
     return ItemResponse(
         id=item.id,
         title=item.title,
@@ -69,6 +105,7 @@ def _item_to_response(item: Item) -> ItemResponse:
             created_at=item.owner.created_at,
         ),
         created_at=item.created_at,
+        first_image_base64=first_image_base64,
     )
 
 

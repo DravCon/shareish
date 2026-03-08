@@ -44,6 +44,8 @@ struct Item: Codable, Identifiable, Sendable {
     let status: String
     let owner: User
     let createdAt: Date
+    /// When set, the server inlined the first image (avoids a separate request that may 404).
+    let firstImageBase64: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -56,6 +58,7 @@ struct Item: Codable, Identifiable, Sendable {
         case status
         case owner
         case createdAt
+        case firstImageBase64
     }
 
     init(from decoder: Decoder) throws {
@@ -72,6 +75,7 @@ struct Item: Codable, Identifiable, Sendable {
         // Backend sends array of strings; be lenient if missing or wrong type
         tags = (try? c.decodeIfPresent([String].self, forKey: .tags)) ?? []
         imageUrls = (try? c.decodeIfPresent([String].self, forKey: .imageUrls)) ?? []
+        firstImageBase64 = try? c.decodeIfPresent(String.self, forKey: .firstImageBase64)
         status = try c.decode(String.self, forKey: .status)
         owner = try c.decode(User.self, forKey: .owner)
         createdAt = try c.decode(Date.self, forKey: .createdAt)
@@ -86,6 +90,7 @@ struct Item: Codable, Identifiable, Sendable {
         try c.encodeIfPresent(condition, forKey: .condition)
         try c.encode(tags, forKey: .tags)
         try c.encode(imageUrls, forKey: .imageUrls)
+        try c.encodeIfPresent(firstImageBase64, forKey: .firstImageBase64)
         try c.encode(status, forKey: .status)
         try c.encode(owner, forKey: .owner)
         try c.encode(createdAt, forKey: .createdAt)
