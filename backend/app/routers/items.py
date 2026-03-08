@@ -85,6 +85,38 @@ def _read_first_image_as_base64(raw_urls: List[str]) -> Optional[str]:
     return None
 
 
+def _upload_to_s3(data: bytes, filename: str, content_type: str) -> Optional[str]:
+    """Upload bytes to S3/R2; return public URL if configured and successful, else None."""
+    bucket = (settings.s3_bucket or "").strip()
+    if not bucket or not (settings.aws_access_key_id and settings.aws_secret_access_key):
+        return None
+    key = f"uploads/{filename}"
+    try:
+        import boto3
+        from botocore.config import Config
+        client = boto3.client(
+            "s3",
+            region_name=settings.s3_region or "us-east-1",
+            aws_access_key_id=settings.aws_access_key_id,
+            aws_secret_access_key=settings.aws_secret_access_key,
+            endpoint_url=settings.s3_endpoint_url or None,
+            config=Config(signature_version="s3v4"),
+        )
+        client.put_object(
+            Bucket=bucket,
+            Key=key,
+            Body=data,
+            ContentType=content_type,
+        )
+        base = (settings.s3_public_base_url or "").strip().rstrip("/")
+        if base:
+            return f"{base}/{key}"
+        region = settings.s3_region or "us-east-1"
+        return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
+    except Exception:
+        return None
+
+
 def _item_to_response(item: Item) -> ItemResponse:
     raw_urls = _urls_to_list(item.image_urls)
     image_urls = [ _to_absolute_image_url(u) for u in raw_urls ] if raw_urls else []
@@ -114,7 +146,7 @@ async def upload_image(
     photo: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
 ):
-    """Upload an image for a listing. Returns URL path (e.g. /uploads/xyz.jpg) to use in image_urls when creating the item."""
+    """Upload an image for a listing. Returns URL (S3/R2 if configured, else local /api/v1/uploads/...)."""
     if not photo.content_type or not photo.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
     data = await photo.read()
@@ -126,11 +158,18 @@ async def upload_image(
     if ext not in ("jpg", "jpeg", "png", "gif", "webp"):
         ext = "jpg"
     name = f"{uuid.uuid4().hex}.{ext}"
+    content_type = photo.content_type or "image/jpeg"
+
+    # Prefer S3/R2 when configured (persistent across redeploys)
+    s3_url = _upload_to_s3(data, name, content_type)
+    if s3_url:
+        return ImageUploadResponse(url=s3_url)
+
+    # Fall back to local disk
     upload_path = Path(settings.upload_dir).resolve()
     upload_path.mkdir(parents=True, exist_ok=True)
     file_path = upload_path / name
     file_path.write_bytes(data)
-    # Path under API prefix so GET /api/v1/uploads/xyz works (proxies forward /api/v1)
     path = f"{settings.api_v1_prefix}/uploads/{name}"
     if settings.public_origin:
         origin = settings.public_origin.strip().rstrip("/")

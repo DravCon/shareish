@@ -10,3 +10,5 @@ python-jose[cryptography]==3.3.0
 httpx==0.28.1
 # Postgres (for production; set DATABASE_URL=postgresql://...)
 psycopg2-binary>=2.9.9
+# S3/R2 for persistent image storage (optional; set S3_* env vars to use)
+boto3>=1.35.0

@@ -26,6 +26,16 @@ class Settings(BaseSettings):
     # When set, item responses and upload response return full image URLs so clients always get loadable URLs.
     public_origin: str = ""
 
+    # Optional S3 (or R2) for persistent image storage. If set, uploads go to the bucket instead of disk.
+    s3_bucket: str = ""
+    s3_region: str = "us-east-1"
+    # Base URL for public object access (e.g. https://bucket.s3.us-east-1.amazonaws.com or R2 public URL).
+    s3_public_base_url: str = ""
+    aws_access_key_id: str = ""
+    aws_secret_access_key: str = ""
+    # Optional custom endpoint (e.g. for Cloudflare R2: https://<account_id>.r2.cloudflarestorage.com).
+    s3_endpoint_url: str = ""
+
     class Config:
         env_file = ".env"
         extra = "ignore"
