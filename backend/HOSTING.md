@@ -54,6 +54,8 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 
 7. **Check**: Open `https://your-railway-url/docs` to confirm the API and try **POST /api/v1/auth/dev-login**.
 
+**“Application failed to respond”:** Check the service **Deployments** tab → click the latest deployment → **View Logs**. Common causes: (1) App crashes on startup (e.g. database connection error) – fix `DATABASE_URL` or the `postgres://` → `postgresql://` conversion in `app/database.py`; (2) Wrong port – the repo uses `start.sh` so the app listens on Railway’s `PORT`. If you use Postgres, ensure the backend service has `DATABASE_URL` set (reference from the Postgres plugin) and that `psycopg2-binary` is in `requirements.txt`.
+
 ### Render
 
 1. New **Web Service**, connect repo, set **Root Directory** to `backend`.

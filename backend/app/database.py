@@ -3,13 +3,18 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from app.config import settings
 
+# Railway Postgres often gives postgres://; SQLAlchemy needs postgresql://
+database_url = settings.database_url
+if database_url.startswith("postgres://"):
+    database_url = "postgresql://" + database_url[9:]
+
 # SQLite needs check_same_thread=False for FastAPI
 connect_args = {}
-if settings.database_url.startswith("sqlite"):
+if database_url.startswith("sqlite"):
     connect_args["check_same_thread"] = False
 
 engine = create_engine(
-    settings.database_url,
+    database_url,
     connect_args=connect_args,
     echo=False,
 )
