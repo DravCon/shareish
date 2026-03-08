@@ -13,7 +13,7 @@ extension Notification.Name {
 enum APIError: Error, LocalizedError {
     case invalidURL
     case invalidResponse
-    case httpStatus(Int)
+    case httpStatus(Int, detail: String? = nil)
     case unauthorized(String?)
     case decoding(Error)
     case encoding(Error)
@@ -23,7 +23,9 @@ enum APIError: Error, LocalizedError {
         switch self {
         case .invalidURL: return "Invalid URL"
         case .invalidResponse: return "Invalid response from server"
-        case .httpStatus(let code): return "Server error (HTTP \(code))"
+        case .httpStatus(let code, let detail):
+            if let detail = detail, !detail.isEmpty { return "\(detail)" }
+            return "Server error (HTTP \(code))"
         case .unauthorized(let detail): return detail ?? "Session expired. Please sign in again."
         case .decoding(let e): return "Decoding error: \(e.localizedDescription)"
         case .encoding(let e): return "Encoding error: \(e.localizedDescription)"
@@ -115,7 +117,10 @@ actor APIClient {
             let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
             throw APIError.unauthorized(detail)
         }
-        guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
         return (data, http)
     }
 
@@ -204,7 +209,10 @@ actor APIClient {
             let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
             throw APIError.unauthorized(detail)
         }
-        guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
         do {
             return try decoder.decode(AIIdentification.self, from: data)
         } catch {

@@ -8,7 +8,7 @@ Ways to run the FastAPI backend on a server so your iOS app (and others) can use
 
 - **Environment variables** (set on the server or in the platform’s dashboard):
   - `JWT_SECRET` – Use a long random string in production (e.g. `openssl rand -hex 32`).
-  - `ANTHROPIC_API_KEY` – For “Identify with AI” (optional if you disable that feature).
+  - `ANTHROPIC_API_KEY` – For “Identify with AI” **Required for "Identify with AI".** If unset, the app shows 503 when you tap it. Get a key at [console.anthropic.com](https://console.anthropic.com).
   - `DATABASE_URL` – Omit for SQLite (file on disk), or set for Postgres (recommended for production).
   - `UPLOAD_DIR` – Optional; default `./uploads`. On PaaS, use a path that persists or use object storage (see below).
 
