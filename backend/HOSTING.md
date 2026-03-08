@@ -31,9 +31,9 @@ Deploy the backend as an app and let the platform handle process, HTTPS, and oft
 1. **Create a project** at [railway.app](https://railway.app) and connect your GitHub repo (or use **Deploy from GitHub** and select the `shareish` repo).
 
 2. **Add a new service** from the repo. In the new service:
-   - **Settings → General**: set **Root Directory** to `backend` (so the build runs from the backend folder).
-   - **Settings → Build**: The repo uses a **Dockerfile** so Railway builds with Docker instead of Railpack (avoids “error creating build plan on Railpack”). The `backend/railway.toml` sets `builder = "DOCKERFILE"`. If your build still uses Railpack and fails, go to **Settings → Build** and set **Builder** to **Dockerfile**.
-   - **Settings → Deploy**: Start command is set in `railway.toml`. If needed, set **Custom Start Command** to:
+   - **Settings → General**: leave **Root Directory blank** (use repo root). The repo has a **Dockerfile** and **railway.toml** at the top level so Railway detects Docker and skips Railpack (fixes “Script start.sh not found” / “Railpack could not determine how to build”).
+   - **Settings → Build**: Railway should pick the Dockerfile automatically. If it still uses Railpack, set **Builder** to **Dockerfile**.
+   - **Settings → Deploy**: Start command is in `railway.toml`. If needed, set **Custom Start Command** to:
      ```bash
      uvicorn app.main:app --host 0.0.0.0 --port $PORT
      ```
