@@ -1,0 +1,11 @@
+# Railway config for Shareish backend
+# In Railway: set Root Directory to "backend" so build runs from this folder.
+# Start command uses $PORT provided by Railway.
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

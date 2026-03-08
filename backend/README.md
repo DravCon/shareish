@@ -2,6 +2,8 @@
 
 FastAPI backend for the Shareish iOS app. Uses SQLite by default so you can run it without installing PostgreSQL.
 
+**Deploying to a server?** See [HOSTING.md](HOSTING.md) for PaaS (Railway, Render, Fly.io), VPS, and Docker.
+
 ## Setup
 
 1. **Create a virtual environment (recommended)**
