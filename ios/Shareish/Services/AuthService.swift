@@ -33,7 +33,19 @@ enum AuthServiceError: Error, LocalizedError {
 }
 
 #if canImport(FirebaseAuth)
+/// Configure Firebase from plist if not already configured. Call before any Firebase API use.
+private func configureFirebaseIfNeeded() {
+    guard FirebaseApp.app() == nil else { return }
+    guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+          let plist = NSDictionary(contentsOfFile: path) as? [String: Any],
+          let projectId = plist["PROJECT_ID"] as? String,
+          !projectId.isEmpty,
+          !projectId.contains("your-firebase") else { return }
+    FirebaseApp.configure()
+}
+
 private func ensureFirebaseConfigured() throws {
+    configureFirebaseIfNeeded()
     guard FirebaseApp.app() != nil else {
         throw AuthServiceError.firebaseNotConfigured
     }

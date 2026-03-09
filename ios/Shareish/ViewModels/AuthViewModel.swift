@@ -16,7 +16,8 @@ final class AuthViewModel: ObservableObject {
     @Published var isAuthenticated = false
     @Published var isDevLoggingIn = false
 
-    private let authService = AuthService.shared
+    /// Accessed only when doing phone auth (sendOTP/verifyOTP/signOut), so Firebase isn't loaded at launch.
+    private var authService: AuthService { AuthService.shared }
     private let client = APIClient.shared
 
     var isOTPSent: Bool { verificationID != nil }
