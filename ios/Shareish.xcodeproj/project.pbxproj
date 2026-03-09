@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5351F6FF2F5C6EF200B3EEE2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5351F6FE2F5C6EF200B3EEE2 /* FirebaseAuth */; };
 		5351F7012F5C6EF200B3EEE2 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5351F7002F5C6EF200B3EEE2 /* FirebaseCore */; };
+		5351F7032F5E9EBA00B3EEE2 /* GoogleService-Info 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5351F7022F5E9EBA00B3EEE2 /* GoogleService-Info 2.plist */; };
 		B00100000000000000000001 /* ShareishApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000001 /* ShareishApp.swift */; };
 		B00100000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000002 /* ContentView.swift */; };
 		B00100000000000000000003 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000003 /* User.swift */; };
@@ -33,12 +34,13 @@
 		B00100000000000000000016 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000016 /* KeychainHelper.swift */; };
 		B00100000000000000000017 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000017 /* ImageService.swift */; };
 		B00100000000000000000018 /* WhatsAppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000018 /* WhatsAppHelper.swift */; };
-		B00100000000000000000022 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000022 /* ServerConfig.swift */; };
 		B00100000000000000000019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000019 /* Assets.xcassets */; };
 		B0010000000000000000001C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000021 /* GoogleService-Info.plist */; };
+		B00100000000000000000022 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000022 /* ServerConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5351F7022F5E9EBA00B3EEE2 /* GoogleService-Info 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info 2.plist"; sourceTree = "<group>"; };
 		F00100000000000000000001 /* ShareishApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareishApp.swift; sourceTree = "<group>"; };
 		F00100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F00100000000000000000003 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				F00100000000000000000019 /* Assets.xcassets */,
 				F00100000000000000000021 /* GoogleService-Info.plist */,
 				G00100000000000000000009 /* Info.plist (virtual) */,
+				5351F7022F5E9EBA00B3EEE2 /* GoogleService-Info 2.plist */,
 			);
 			path = Shareish;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B00100000000000000000019 /* Assets.xcassets in Resources */,
+				5351F7032F5E9EBA00B3EEE2 /* GoogleService-Info 2.plist in Resources */,
 				B0010000000000000000001C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
