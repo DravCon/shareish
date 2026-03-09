@@ -30,9 +30,14 @@ final class AuthViewModel: ObservableObject {
 
         do {
             let response: LoginResponse = try await client.post("/auth/dev-login", body: DevLoginBody())
+            guard !response.token.isEmpty else {
+                errorMessage = "No token in response"
+                return
+            }
             KeychainHelper.saveToken(response.token)
             await client.setAuthToken(response.token)
-            isAuthenticated = true
+            // Defer UI switch to next run loop so view update doesn't run mid-flow (avoids layout crashes)
+            await MainActor.run { isAuthenticated = true }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -88,7 +93,11 @@ final class AuthViewModel: ObservableObject {
     }
 
     func signOut() {
-        try? authService.signOut()
+        do {
+            try authService.signOut()
+        } catch {
+            // Dev login doesn't use Firebase; ignore signOut errors
+        }
         KeychainHelper.deleteToken()
         Task {
             await client.setAuthToken(nil)
