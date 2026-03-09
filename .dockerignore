@@ -1,0 +1,13 @@
+# Only backend is copied in Dockerfile; ignore the rest to keep context small
+.git
+.venv
+backend/.venv
+backend/.env
+backend/__pycache__
+backend/**/__pycache__
+backend/*.db
+ios
+*.md
+.cursor
+.env
+.env.*

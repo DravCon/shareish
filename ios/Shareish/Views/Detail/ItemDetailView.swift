@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ItemDetailView: View {
     let itemId: UUID
@@ -39,10 +40,17 @@ struct ItemDetailView: View {
     private func detailContent(item: Item) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if !item.imageUrls.isEmpty {
+                if let b64 = item.firstImageBase64,
+                   let data = Data(base64Encoded: b64),
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 280)
+                } else if !item.imageUrls.isEmpty {
                     TabView {
                         ForEach(Array(item.imageUrls.enumerated()), id: \.offset) { _, urlString in
-                            if let url = URL(string: urlString) {
+                            if let url = ServerConfig.imageURL(for: urlString) {
                                 AsyncImage(url: url) { phase in
                                     switch phase {
                                     case .success(let image):
@@ -52,17 +60,27 @@ struct ItemDetailView: View {
                                     case .failure:
                                         Rectangle()
                                             .fill(.quaternary)
-                                            .overlay { Image(systemName: "photo") }
+                                            .overlay {
+                                                Image(systemName: "photo")
+                                                    .font(.largeTitle)
+                                                    .foregroundStyle(.secondary)
+                                            }
                                     default:
-                                        ProgressView()
+                                        Rectangle()
+                                            .fill(.quaternary)
+                                            .overlay { ProgressView() }
                                     }
                                 }
                                 .frame(height: 280)
+                            } else {
+                                placeholderImageRow()
                             }
                         }
                     }
                     .tabViewStyle(.page)
                     .frame(height: 280)
+                } else {
+                    placeholderImageRow()
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -119,6 +137,17 @@ struct ItemDetailView: View {
                 .disabled(claimViewModel.isClaiming)
             }
         }
+    }
+
+    private func placeholderImageRow() -> some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(.quaternary)
+            .frame(height: 280)
+            .overlay {
+                Image(systemName: "photo")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+            }
     }
 
     private func loadItem() async {

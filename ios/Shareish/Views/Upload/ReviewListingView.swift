@@ -140,7 +140,7 @@ struct ReviewListingView: View {
             category: category.isEmpty ? ItemCategory.other.rawValue : category,
             condition: condition.isEmpty ? ItemCondition.used.rawValue : condition,
             tags: tags,
-            imageUrl: nil
+            imageData: viewModel.imageDataForUpload
         )
     }
 }

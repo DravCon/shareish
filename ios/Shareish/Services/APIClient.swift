@@ -5,10 +5,16 @@
 
 import Foundation
 
+/// Posted when the server returns 401 and the client clears the stored session.
+extension Notification.Name {
+    static let shareishSessionExpired = Notification.Name("ShareishSessionExpired")
+}
+
 enum APIError: Error, LocalizedError {
     case invalidURL
     case invalidResponse
-    case httpStatus(Int)
+    case httpStatus(Int, detail: String? = nil)
+    case unauthorized(String?)
     case decoding(Error)
     case encoding(Error)
     case noData
@@ -17,7 +23,10 @@ enum APIError: Error, LocalizedError {
         switch self {
         case .invalidURL: return "Invalid URL"
         case .invalidResponse: return "Invalid response from server"
-        case .httpStatus(let code): return "Server error (HTTP \(code))"
+        case .httpStatus(let code, let detail):
+            if let detail = detail, !detail.isEmpty { return "\(detail)" }
+            return "Server error (HTTP \(code))"
+        case .unauthorized(let detail): return detail ?? "Session expired. Please sign in again."
         case .decoding(let e): return "Decoding error: \(e.localizedDescription)"
         case .encoding(let e): return "Encoding error: \(e.localizedDescription)"
         case .noData: return "No data received"
@@ -70,6 +79,15 @@ actor APIClient {
         authToken = token
     }
 
+    /// Clear stored token and notify so the app can show login again (e.g. after 401).
+    private func clearSessionAndNotify() {
+        authToken = nil
+        KeychainHelper.deleteToken()
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .shareishSessionExpired, object: nil)
+        }
+    }
+
     private func url(for path: String, query: [String: String]? = nil) throws -> URL {
         let normalizedPath = path.hasPrefix("/") ? path : "/" + path
         let full = baseURL + normalizedPath
@@ -94,7 +112,15 @@ actor APIClient {
 
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
-        guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
         return (data, http)
     }
 
@@ -178,12 +204,57 @@ actor APIClient {
 
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
-        guard (200...299).contains(http.statusCode) else { throw APIError.httpStatus(http.statusCode) }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
         do {
             return try decoder.decode(AIIdentification.self, from: data)
         } catch {
             throw APIError.decoding(error)
         }
+    }
+
+    /// Upload image for a listing; returns full URL to use in image_urls when creating the item.
+    func uploadImageForListing(imageData: Data, filename: String = "photo.jpg") async throws -> String {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"photo\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+
+        let url = try url(for: "/items/upload")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.httpBody = body
+        if let token = await authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else { throw APIError.invalidResponse }
+        if http.statusCode == 401 {
+            await clearSessionAndNotify()
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.unauthorized(detail)
+        }
+        guard (200...299).contains(http.statusCode) else {
+            let detail = (try? JSONDecoder().decode([String: String].self, from: data))?["detail"]
+            throw APIError.httpStatus(http.statusCode, detail: detail)
+        }
+        let decoded = try decoder.decode(ImageUploadResponse.self, from: data)
+        // Backend returns path like /api/v1/uploads/xyz.jpg; build full URL from origin
+        let path = decoded.url.hasPrefix("/") ? decoded.url : "/" + decoded.url
+        let origin = ServerConfig.origin
+        return origin.hasSuffix("/") ? origin + path.dropFirst() : origin + path
     }
 }
 

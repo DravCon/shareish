@@ -69,7 +69,10 @@ def get_current_user(
 ) -> User:
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")
+        raise HTTPException(
+            status_code=401,
+            detail="User not found. The server may have been restarted; sign in again.",
+        )
     return user
 
 
@@ -110,22 +113,28 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 @router.post("/dev-login", response_model=LoginResponse)
 def dev_login(phone_number: str = "+911234567890", db: Session = Depends(get_db)):
     """Dev only: get a token without Firebase. POST /api/v1/auth/dev-login or ?phone_number=+91..."""
-    user = db.query(User).filter(User.phone_number == phone_number).first()
-    if not user:
-        user = User(phone_number=phone_number, firebase_uid=None)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    token = create_access_token(user.id)
-    return LoginResponse(
-        token=token,
-        user=UserResponse(
-            id=user.id,
-            phone_number=user.phone_number,
-            display_name=user.display_name,
-            created_at=user.created_at,
-        ),
-    )
+    try:
+        user = db.query(User).filter(User.phone_number == phone_number).first()
+        if not user:
+            user = User(phone_number=phone_number, firebase_uid=None)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        token = create_access_token(str(user.id))
+        return LoginResponse(
+            token=token,
+            user=UserResponse(
+                id=str(user.id),
+                phone_number=user.phone_number,
+                display_name=user.display_name,
+                created_at=user.created_at,
+            ),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Dev login failed: {type(e).__name__}: {str(e)}",
+        ) from e
 
 
 @router.get("/me", response_model=UserResponse)

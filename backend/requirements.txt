@@ -4,6 +4,11 @@ python-multipart==0.0.18
 pydantic==2.10.3
 pydantic-settings==2.6.1
 sqlalchemy==2.0.36
-anthropic==0.39.0
+# 0.45.2+ required for compatibility with httpx 0.28+ (proxies argument removed)
+anthropic>=0.45.2
 python-jose[cryptography]==3.3.0
 httpx==0.28.1
+# Postgres (for production; set DATABASE_URL=postgresql://...)
+psycopg2-binary>=2.9.9
+# S3/R2 for persistent image storage (optional; set S3_* env vars to use)
+boto3>=1.35.0

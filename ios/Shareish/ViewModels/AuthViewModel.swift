@@ -18,8 +18,32 @@ final class AuthViewModel: ObservableObject {
 
     private let authService = AuthService.shared
     private let client = APIClient.shared
+    private var sessionExpiredObserver: NSObjectProtocol?
 
     var isOTPSent: Bool { verificationID != nil }
+
+    init() {
+        sessionExpiredObserver = NotificationCenter.default.addObserver(
+            forName: .shareishSessionExpired,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.handleSessionExpired()
+        }
+    }
+
+    deinit {
+        if let o = sessionExpiredObserver {
+            NotificationCenter.default.removeObserver(o)
+        }
+    }
+
+    private func handleSessionExpired() {
+        isAuthenticated = false
+        verificationID = nil
+        verificationCode = ""
+        errorMessage = "Session expired. Please sign in again."
+    }
 
     /// Log in without Firebase by calling backend's dev-login (for testing).
     func devLogin() async {

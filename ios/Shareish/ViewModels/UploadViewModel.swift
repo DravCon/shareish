@@ -50,10 +50,21 @@ final class UploadViewModel: ObservableObject {
         }
     }
 
-    func createItem(title: String, description: String, category: String, condition: String, tags: [String], imageUrl: String?) async {
+    /// Creates the item. If imageData is provided, uploads it first and attaches the image URL to the listing.
+    func createItem(title: String, description: String, category: String, condition: String, tags: [String], imageData: Data?) async {
         isCreating = true
         errorMessage = nil
         defer { isCreating = false }
+
+        var imageUrl: String?
+        if let data = imageData, !data.isEmpty {
+            do {
+                imageUrl = try await client.uploadImageForListing(imageData: data)
+            } catch {
+                errorMessage = error.localizedDescription
+                return
+            }
+        }
 
         struct CreateItemBody: Encodable {
             let title: String

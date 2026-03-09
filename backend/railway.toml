@@ -1,0 +1,13 @@
+# Railway config for Shareish backend
+# In Railway: set Root Directory to "backend" so build runs from this folder.
+# If you get "error creating build plan on Railpack", use the Dockerfile:
+#   Settings → Build → Builder → Dockerfile (or add Dockerfile and redeploy).
+
+[build]
+# Use Dockerfile to avoid "error creating build plan" with Railpack
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

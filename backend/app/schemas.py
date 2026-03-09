@@ -46,6 +46,10 @@ class AIIdentificationResponse(BaseModel):
     confidence: float
 
 
+class ImageUploadResponse(BaseModel):
+    url: str  # e.g. /uploads/abc123.jpg (client prepends server origin)
+
+
 class ItemCreate(BaseModel):
     title: str
     description: str
@@ -70,6 +74,7 @@ class ItemResponse(BaseModel):
     status: str
     owner: UserResponse
     created_at: datetime
+    first_image_base64: Optional[str] = None  # when set, client can show image without a separate GET
 
     class Config:
         from_attributes = True

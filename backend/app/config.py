@@ -7,6 +7,12 @@ class Settings(BaseSettings):
 
     # Database (SQLite for dev; set DATABASE_URL for Postgres)
     database_url: str = "sqlite:///./shareish.db"
+    # If DATABASE_URL is only a hostname, we can build URL from these (Railway Postgres exposes them)
+    pg_host: str = ""
+    pg_port: str = "5432"
+    pg_user: str = ""
+    pg_password: str = ""
+    pg_database: str = "railway"
 
     # JWT we issue after Firebase login
     jwt_secret: str = "change-me-in-production-use-long-random-string"
@@ -21,6 +27,20 @@ class Settings(BaseSettings):
 
     # Uploaded images stored under this directory; URLs will be /uploads/...
     upload_dir: str = "./uploads"
+
+    # Public origin for absolute image URLs (e.g. https://shareish-production.up.railway.app).
+    # When set, item responses and upload response return full image URLs so clients always get loadable URLs.
+    public_origin: str = ""
+
+    # Optional S3 (or R2) for persistent image storage. If set, uploads go to the bucket instead of disk.
+    s3_bucket: str = ""
+    s3_region: str = "us-east-1"
+    # Base URL for public object access (e.g. https://bucket.s3.us-east-1.amazonaws.com or R2 public URL).
+    s3_public_base_url: str = ""
+    aws_access_key_id: str = ""
+    aws_secret_access_key: str = ""
+    # Optional custom endpoint (e.g. for Cloudflare R2: https://<account_id>.r2.cloudflarestorage.com).
+    s3_endpoint_url: str = ""
 
     class Config:
         env_file = ".env"

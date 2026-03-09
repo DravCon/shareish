@@ -4,14 +4,23 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ItemCardView: View {
     let item: Item
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let urlString = item.imageUrls.first,
-               let url = URL(string: urlString) {
+            if let b64 = item.firstImageBase64,
+               let data = Data(base64Encoded: b64),
+               let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 160)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else if let url = ServerConfig.imageURL(for: item.imageUrls.first) {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:

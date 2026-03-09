@@ -15,6 +15,7 @@
 		B00100000000000000000004 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000004 /* Item.swift */; };
 		B00100000000000000000005 /* Claim.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000005 /* Claim.swift */; };
 		B00100000000000000000006 /* AIIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000006 /* AIIdentification.swift */; };
+		B00100000000000000000024 /* ImageUploadResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000024 /* ImageUploadResponse.swift */; };
 		B00100000000000000000007 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000007 /* LoginResponse.swift */; };
 		B00100000000000000000008 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000008 /* LoginView.swift */; };
 		B00100000000000000000009 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000009 /* FeedView.swift */; };
@@ -22,6 +23,7 @@
 		B0010000000000000000000B /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000B /* CameraView.swift */; };
 		B0010000000000000000000C /* ReviewListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000C /* ReviewListingView.swift */; };
 		B0010000000000000000000D /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000D /* ImagePickerView.swift */; };
+		B00100000000000000000023 /* CameraCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000023 /* CameraCaptureView.swift */; };
 		B0010000000000000000000E /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000E /* ItemDetailView.swift */; };
 		B0010000000000000000000F /* MyListingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0010000000000000000000F /* MyListingsView.swift */; };
 		B00100000000000000000010 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00100000000000000000010 /* AuthViewModel.swift */; };
@@ -45,6 +47,7 @@
 		F00100000000000000000004 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F00100000000000000000005 /* Claim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Claim.swift; sourceTree = "<group>"; };
 		F00100000000000000000006 /* AIIdentification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIIdentification.swift; sourceTree = "<group>"; };
+		F00100000000000000000024 /* ImageUploadResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadResponse.swift; sourceTree = "<group>"; };
 		F00100000000000000000007 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		F00100000000000000000008 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		F00100000000000000000009 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -52,6 +55,7 @@
 		F0010000000000000000000B /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000C /* ReviewListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListingView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000D /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		F00100000000000000000023 /* CameraCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000E /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		F0010000000000000000000F /* MyListingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingsView.swift; sourceTree = "<group>"; };
 		F00100000000000000000010 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 				F00100000000000000000004 /* Item.swift */,
 				F00100000000000000000005 /* Claim.swift */,
 				F00100000000000000000006 /* AIIdentification.swift */,
+				F00100000000000000000024 /* ImageUploadResponse.swift */,
 				F00100000000000000000007 /* LoginResponse.swift */,
 			);
 			path = Models;
@@ -198,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				F0010000000000000000000B /* CameraView.swift */,
+				F00100000000000000000023 /* CameraCaptureView.swift */,
 				F0010000000000000000000C /* ReviewListingView.swift */,
 				F0010000000000000000000D /* ImagePickerView.swift */,
 			);
@@ -294,6 +300,7 @@
 				B00100000000000000000004 /* Item.swift in Sources */,
 				B00100000000000000000005 /* Claim.swift in Sources */,
 				B00100000000000000000006 /* AIIdentification.swift in Sources */,
+				B00100000000000000000024 /* ImageUploadResponse.swift in Sources */,
 				B00100000000000000000007 /* LoginResponse.swift in Sources */,
 				B00100000000000000000008 /* LoginView.swift in Sources */,
 				B00100000000000000000009 /* FeedView.swift in Sources */,
@@ -301,6 +308,7 @@
 				B0010000000000000000000B /* CameraView.swift in Sources */,
 				B0010000000000000000000C /* ReviewListingView.swift in Sources */,
 				B0010000000000000000000D /* ImagePickerView.swift in Sources */,
+				B00100000000000000000023 /* CameraCaptureView.swift in Sources */,
 				B0010000000000000000000E /* ItemDetailView.swift in Sources */,
 				B0010000000000000000000F /* MyListingsView.swift in Sources */,
 				B00100000000000000000010 /* AuthViewModel.swift in Sources */,
