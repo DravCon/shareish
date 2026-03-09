@@ -12,7 +12,14 @@ import FirebaseCore
 struct ShareishApp: App {
     init() {
         #if canImport(FirebaseCore)
-        FirebaseApp.configure()
+        // Only configure if we have a real Firebase plist (avoids crash with placeholder plist)
+        if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+           let plist = NSDictionary(contentsOfFile: path) as? [String: Any],
+           let projectId = plist["PROJECT_ID"] as? String,
+           !projectId.isEmpty,
+           !projectId.contains("your-firebase") {
+            FirebaseApp.configure()
+        }
         #endif
     }
 

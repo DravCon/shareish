@@ -19,10 +19,13 @@ Use this to confirm everything is in place for phone login via Firebase (no back
 - [ ] **Firebase SDK** is linked:
   - Via **Swift Package Manager**: add `https://github.com/firebase/firebase-ios-sdk`, then add **FirebaseAuth** and **FirebaseCore** to the Shareish target.
   - Or via CocoaPods: `pod 'Firebase/Auth'` (and run `pod install`).
-- [ ] **FirebaseApp.configure()** is called at app launch (already added in `ShareishApp.swift`).
-- [ ] **Phone Auth flow** is implemented in `AuthView.swift` (Firebase `verifyPhoneNumber` → user enters code → `signIn` → get ID token → call backend `firebase_login`).
+- [ ] **GoogleService-Info.plist** has real values (not placeholders): replace `PROJECT_ID`, `API_KEY`, and **REVERSED_CLIENT_ID** with values from Firebase Console. The app only calls `FirebaseApp.configure()` when the plist has a valid-looking `PROJECT_ID` (avoids crash with placeholder plist).
+- [ ] **Phone Auth flow** is in `LoginView.swift` / `AuthViewModel` (Firebase `verifyPhoneNumber` → enter code → `signIn` → get ID token → `POST /auth/login`). An **AuthUIDelegate** is used so reCAPTCHA can be presented when needed (simulator or when APNs is not used).
 
-**Optional for production:** If Firebase prompts for reCAPTCHA on iOS, you may need to implement a `AuthUIDelegate` (e.g. present a `SFSafariViewController` or Firebase’s reCAPTCHA view). For testing, nil `uiDelegate` can work when the device is allowed in Firebase.
+- [ ] **URL scheme for reCAPTCHA:** In Xcode → Target → **Info** → **URL Types**, add a type with **URL Scheme** = the value of **REVERSED_CLIENT_ID** from your `GoogleService-Info.plist`. Required for Phone Auth reCAPTCHA redirect on iOS.
+- [ ] **Test phone number (optional):** In Firebase Console → **Authentication** → **Sign-in method** → **Phone** → **Phone numbers for testing**, add a test number and fixed verification code (e.g. `123456`). Use that number in the app to sign in without SMS.
+
+<!-- AuthUIDelegate is now implemented in app. -->
 
 ---
 

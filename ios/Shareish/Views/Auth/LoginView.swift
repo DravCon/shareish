@@ -47,6 +47,10 @@ struct LoginView: View {
                 .padding()
                 .background(.quaternary)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+            Text("Use a test number from Firebase Console (Phone → Phone numbers for testing) to get a fixed code without SMS.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
             Button("Send OTP") {
                 Task { await viewModel.sendOTP() }
             }

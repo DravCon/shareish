@@ -10,6 +10,10 @@ import FirebaseAuth
 import FirebaseCore
 #endif
 
+#if canImport(UIKit)
+import UIKit
+#endif
+
 enum AuthServiceError: Error, LocalizedError {
     case noVerificationID
     case noIDToken
@@ -39,6 +43,10 @@ private func ensureFirebaseConfigured() throws {
 final class AuthService {
     static let shared = AuthService()
 
+    #if canImport(FirebaseAuth) && canImport(UIKit)
+    private let uiDelegate = FirebaseAuthUIDelegate()
+    #endif
+
     #if canImport(FirebaseAuth)
     var currentFirebaseUser: FirebaseAuth.User? {
         guard FirebaseApp.app() != nil else { return nil }
@@ -52,17 +60,30 @@ final class AuthService {
         #if canImport(FirebaseAuth)
         try ensureFirebaseConfigured()
         let auth = Auth.auth()
+        #if canImport(UIKit)
+        let delegate = uiDelegate
+        #else
+        let delegate: AuthUIDelegate? = nil
+        #endif
         return try await withCheckedThrowingContinuation { continuation in
-            PhoneAuthProvider.provider(auth: auth).verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationID, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
+            PhoneAuthProvider.provider(auth: auth).verifyPhoneNumber(phoneNumber, uiDelegate: delegate) { verificationID, error in
+                // Ensure we resume on main so @Published updates in AuthViewModel are visible
+                let resume: () -> Void = {
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    guard let verificationID = verificationID else {
+                        continuation.resume(throwing: AuthServiceError.noVerificationID)
+                        return
+                    }
+                    continuation.resume(returning: verificationID)
                 }
-                guard let verificationID = verificationID else {
-                    continuation.resume(throwing: AuthServiceError.noVerificationID)
-                    return
+                if Thread.isMainThread {
+                    resume()
+                } else {
+                    DispatchQueue.main.async { resume() }
                 }
-                continuation.resume(returning: verificationID)
             }
         }
         #else
