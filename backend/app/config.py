@@ -1,11 +1,14 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", env_ignore_empty=True)
+
     # API
     api_v1_prefix: str = "/api/v1"
 
-    # Database (SQLite for dev; set DATABASE_URL for Postgres)
+    # Database (SQLite for dev; set DATABASE_URL for Postgres on Railway)
+    # With env_ignore_empty=True, empty DATABASE_URL is ignored and this default is used
     database_url: str = "sqlite:///./shareish.db"
 
     # JWT we issue after Firebase login
@@ -21,10 +24,6 @@ class Settings(BaseSettings):
 
     # Uploaded images stored under this directory; URLs will be /uploads/...
     upload_dir: str = "./uploads"
-
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
 
 
 settings = Settings()
