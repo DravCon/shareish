@@ -87,7 +87,8 @@ final class AuthService {
     static let shared = AuthService()
 
     #if canImport(FirebaseAuth) && canImport(UIKit)
-    private let uiDelegate = FirebaseAuthUIDelegate()
+    /// Created on first use so we don't load Firebase Auth types at app launch (avoids crash when Firebase isn't configured).
+    private lazy var uiDelegate = FirebaseAuthUIDelegate()
     #endif
 
     #if canImport(FirebaseAuth)
