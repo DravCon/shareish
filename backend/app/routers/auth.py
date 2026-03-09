@@ -110,22 +110,30 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 @router.post("/dev-login", response_model=LoginResponse)
 def dev_login(phone_number: str = "+911234567890", db: Session = Depends(get_db)):
     """Dev only: get a token without Firebase. POST /api/v1/auth/dev-login or ?phone_number=+91..."""
-    user = db.query(User).filter(User.phone_number == phone_number).first()
-    if not user:
-        user = User(phone_number=phone_number, firebase_uid=None)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    token = create_access_token(user.id)
-    return LoginResponse(
-        token=token,
-        user=UserResponse(
-            id=user.id,
-            phone_number=user.phone_number,
-            display_name=user.display_name,
-            created_at=user.created_at,
-        ),
-    )
+    try:
+        user = db.query(User).filter(User.phone_number == phone_number).first()
+        if not user:
+            user = User(phone_number=phone_number, firebase_uid=None)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        user_id = str(user.id) if user.id is not None else ""
+        if not user_id:
+            raise HTTPException(status_code=500, detail="User id missing after create")
+        token = create_access_token(user_id)
+        return LoginResponse(
+            token=token,
+            user=UserResponse(
+                id=user_id,
+                phone_number=user.phone_number or "",
+                display_name=user.display_name,
+                created_at=user.created_at,
+            ),
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Dev login failed: {e!s}")
 
 
 @router.get("/me", response_model=UserResponse)
